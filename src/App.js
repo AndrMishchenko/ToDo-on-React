@@ -1,12 +1,18 @@
 import './App.css';
-import {useState, usEffect} from 'react';
+import {useState, usEffect, useEffect} from 'react';
 import sun from './Photo/sun.svg';
 import {db} from './firebase.js';
+import { addDoc, collection, onSnapshot, query } from 'firebase/firestore';
 
 function App() {
 
   const [darkTheme, setDarkTheme] = useState(true);
   const [lightTheme, setLightTheme] = useState(false);
+
+  const [sendTodo, setSendTodo] = useState('');
+  const [readTodo, setReadTodo] = useState([])
+
+  const time = new Date().getTime();
 
   const changeTheme = () => {
     if(darkTheme){
@@ -15,6 +21,28 @@ function App() {
     }
   }
 
+  const send = async() => {
+    if(sendTodo === ''){
+      alert('enter task')
+    }else await addDoc(collection(db, 'ToDo'), {
+      task:sendTodo,
+      time:time
+    })
+    setSendTodo('')
+  }
+
+  useEffect(() => {
+    const q = query(collection(db, 'ToDo'))
+    const subscribe = onSnapshot(q, (querySnapshot) => {
+      let newArr = []
+      querySnapshot.forEach((doc) => {
+        newArr.push({...doc.data()})
+      })
+      setReadTodo(newArr);
+      newArr.sort((a,b) => a.time - b.time).reverse()
+    })
+    return() => subscribe()
+  },[])
 
   return (
     <>
@@ -34,10 +62,19 @@ function App() {
               </div>
               <input 
                 className='dark-theme-input'
+                value={sendTodo}
+                onChange={(e) => setSendTodo(e.target.value)}
               ></input>
-              <div className='add-todo-dark'>+</div>
+              <div 
+                className='add-todo-dark'
+                onClick={send}  
+              >+</div>
             </div>
-            
+            <div className='todo-task'>
+              {readTodo.map(task => (
+                <div className='task'>{task.task}</div>
+              ))}
+            </div>
           </div>
         </div>
         </>

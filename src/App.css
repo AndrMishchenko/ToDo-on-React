@@ -106,6 +106,28 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  transition: all 0.5s;
+}
+
+.add-todo-dark:hover{
+  transform: scale(1.5);
+  transition: all 0.5s;
+}
+
+.todo-task{
+  width: 100%;
+  height: 300px;
+  background-color: white;
+  color: black;
+  overflow-y: scroll;
+}
+
+.task{
+  width: 100%;
+  height: 50px;
+  background-color: white;
+  color: black;
 }
 
 @media (max-width: 990px) {

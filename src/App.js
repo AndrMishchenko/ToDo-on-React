@@ -1,8 +1,9 @@
 import './App.css';
-import {useState, usEffect, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 import sun from './Photo/sun.svg';
+import close from './Photo/close.svg'
 import {db} from './firebase.js';
-import { addDoc, collection, onSnapshot, query } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, onSnapshot, query } from 'firebase/firestore';
 
 function App() {
 
@@ -36,13 +37,17 @@ function App() {
     const subscribe = onSnapshot(q, (querySnapshot) => {
       let newArr = []
       querySnapshot.forEach((doc) => {
-        newArr.push({...doc.data()})
+        newArr.push({...doc.data(), id:doc.id})
       })
       setReadTodo(newArr);
       newArr.sort((a,b) => a.time - b.time).reverse()
     })
     return() => subscribe()
   },[])
+
+  const deleteToDo = async(id) => {
+    await deleteDoc(doc(db, 'ToDo', id))
+  }
 
   return (
     <>
@@ -70,11 +75,27 @@ function App() {
                 onClick={send}  
               >+</div>
             </div>
-            <div className='todo-task'>
-              {readTodo.map(task => (
-                <div className='task'>{task.task}</div>
-              ))}
+            <div className='todo-task-wrapper'>
+              <div className='todo-task'>
+                {readTodo.map((task, index) => (
+                  <>
+                  <div className='task' key={index}>{task.task}
+                    <img onClick={() => deleteToDo(task.id)} src={close}></img>
+                  </div>
+                  </>
+                ))}
+              </div>
+              <div className='dark-bottom-menu'>
+                    <div className='dark-current-todo'>items left</div>
+                    <div className='dark-todo-state'>
+                      <div>All</div>
+                      <div>Active</div>
+                      <div>Completed</div>
+                    </div>
+                    <div className='dark-todo-clear'>Clear Completed</div>
+                  </div>
             </div>
+            
           </div>
         </div>
         </>

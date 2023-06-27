@@ -73,6 +73,7 @@
   align-items: center;
   justify-content: flex-start;
   margin-bottom: 25px;
+  border-radius: 20px;
 }
 
 .dark-theme-block-input-status{
@@ -120,52 +121,145 @@
   transition: all 0.5s;
 }
 
-.todo-task-wrapper{
+.dark-all-todo{
+  width: 100%;
+  height: 400px;
   background-color: #25273c;
-  width: 100%;
-  height: 435px;
   border-radius: 20px;
+  overflow-y: scroll;
 }
 
-.todo-task {
-  width: 100%;
-  height: 380px;
-  color: black;
-  overflow-y: auto;
-  scrollbar-width: none; /* Убирает полосу прокрутки в браузерах, поддерживающих свойство scrollbar-width */
-  -ms-overflow-style: none; /* Убирает полосу прокрутки в Internet Explorer и Edge */
+.dark-all-todo::-webkit-scrollbar {
+  width: 0px; 
+  background-color: transparent; 
+  -webkit-appearance: none; 
 }
 
-.todo-task::-webkit-scrollbar {
-  display: none; /* Убирает полосу прокрутки в браузерах на основе WebKit, например, Chrome и Safari */
-}
-
-.task{
+.dark-todo{
   width: 100%;
   height: 50px;
-  background-color: white;
-  color: black;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+  display: flex;
+  align-items: center;
+  color: white;
+  font-weight: 100;
+  font-size: 25px;
+  cursor: pointer;
 }
 
-.task:nth-child(1){
-  border-radius: 20px 20px 0 0;
+.dark-todo-status{
+  width: 50px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dark-todo-status-circle {
+  height: 20px;
+  width: 20px;
+  background:  linear-gradient( aqua, rgb(206, 122, 255));
+  border-radius: 50px;
+  opacity: 0;
+  position: relative;
+}
+
+.dark-todo-status-circle::before{
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 17px;
+  height: 17px;
+  background: #25273c;
+  border-radius: 50%;
+}
+
+.dark-todo:hover .dark-todo-status-circle{
+  opacity: 1;
+}
+
+.dark-todo-complited{
+  width: 100%;
+  height: 50px;
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+  display: flex;
+  align-items: center;
+  color: rgba(255,255,255,0.3);
+  font-weight: 100;
+  font-size: 25px;
+  text-decoration: line-through;
+  cursor: pointer;
+}
+
+.dark-todo-status-circle-complited{
+  height: 20px;
+  width: 20px;
+  background:  linear-gradient( aqua, rgb(206, 122, 255));
+  border-radius: 50px;
+}
+
+.dark-todo-delete{
+  width: 50px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  transition: all 0.2s;
+}
+
+.dark-todo-delete:hover{
+  transform: scale(1.4);
+  transition: all 0.2s;
+}
+
+.dark-active-todo{
+  width: 100%;
+  height: 400px;
+  background-color: #25273c;
+  border-radius: 20px;
+  overflow-y: scroll;
+}
+
+.dark-active-todo::-webkit-scrollbar{
+  width: 0;
+  background: transparent;
+  -webkit-appearance: none;
+}
+
+.dark-completed-todo{
+  width: 100%;
+  height: 400px;
+  background-color: #25273c;
+  border-radius: 20px;
+  overflow-y: scroll;
+}
+
+.dark-completed-todo::-webkit-scrollbar{
+  width: 0;
+  background-color: transparent;
+  -webkit-appearance: none;  
 }
 
 .dark-bottom-menu{
   width: 100%;
   height: 55px;
-  background-color: yellow;
-  position: absolute;
-  bottom: 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  border-radius: 0 0 20px 20px;
+  justify-content: space-around;
+  border-radius: 20px;
+  background-color: #25273c;
+  margin-top: 40px;
+}
+
+.number{
+  color: white;
 }
 
 .dark-current-todo{
-
+  color: rgba(255,255,255,0.3);
 }
 
 .dark-todo-state{
@@ -173,10 +267,50 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
+  color: rgba(255,255,255,0.3);
+}
+
+.all:hover,
+.active:hover,
+.completed:hover{
+  cursor: pointer;
+  color: white;
+}
+
+.all-active,
+.active-active,
+.completed-active{
+  color: rgb(0, 225, 255);
+  cursor: pointer;
 }
 
 .dark-todo-clear{
+  color: rgba(255,255,255,0.3);
+  cursor: pointer;
+}
 
+.dark-todo-clear:hover{
+  color: white;
+}
+
+.dark-todo-active-status-circle{
+  width: 20px;
+  height: 20px;
+  background: linear-gradient( aqua, rgb(206, 122, 255));
+  border-radius: 50%;
+  position: relative;
+}
+
+.dark-todo-active-status-circle::before{
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 17px;
+  height: 17px;
+  background-color:#25273c;
+  border-radius: 50%;
 }
 
 @media (max-width: 990px) {

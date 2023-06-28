@@ -1,6 +1,7 @@
 import './App.css';
 import {useState, useEffect} from 'react';
 import sun from './Photo/sun.svg';
+import moon from './Photo/moon.svg'
 import close from './Photo/close.svg'
 import {db} from './firebase.js';
 import { addDoc, collection, deleteDoc, doc, onSnapshot, query, updateDoc, getDoc} from 'firebase/firestore';
@@ -26,6 +27,9 @@ function App() {
     if(darkTheme){
       setDarkTheme(false)
       setLightTheme(true)
+    }else{
+      setDarkTheme(true)
+      setLightTheme(false)
     }
   }
 
@@ -246,7 +250,113 @@ function App() {
 
       {lightTheme && (
         <>
-        
+          <div className='light-theme-wrapper'>
+            <div className='light-theme-img'></div>
+            <div className='light-theme-mob-img'></div>
+            <div className='light-theme-todo-wrapper'>
+              <div className='light-theme-todo-wrapper-titel'>
+                <p className='light-theme-todo-wrapper-titel-text'>TODO</p>
+                <img className='light-theme-todo-wrapper-titel-img' onClick={changeTheme} src={moon}></img>
+              </div>
+            <div className='light-theme-block-input'>
+              <div className='light-theme-block-input-status'>
+                <div className='light-status-circle'></div>
+              </div>
+              <input 
+                className='light-theme-input'
+                value={sendTodo}
+                onChange={(e) => setSendTodo(e.target.value)}
+              ></input>
+              <div 
+                className='add-todo-light'
+                onClick={send}  
+              >+</div>
+            </div>
+              {todo === 'all' && (
+                <>
+                  <div className='light-all-todo'>
+                    {readTodo.map(task => (
+                      <div 
+                        className={task.completed ? 'light-todo-complited' : 'light-todo'}
+                        onClick={() => changeStatus(task.id)}
+                        >
+                        <div className='light-todo-status'>
+                          <div className={task.completed ? 'light-todo-status-circle-complited' : 'light-todo-status-circle'}></div>
+                        </div>
+                        {task.task}
+                        <div className='light-todo-delete'>
+                          <img 
+                            src={close}
+                            onClick={() => deleteTask(task.id)}
+                          ></img>
+                        </div>   
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {todo === 'active' && (
+                <>
+                  <div className='light-active-todo'>
+                    {activeTask.map(activeTask => (
+                      <div 
+                        className='light-todo'
+                        onClick={() => deleteActiveTask(activeTask.id)}
+                      >
+                        <div className='light-todo-status'>
+                          <div className='light-todo-active-status-circle'></div>
+                        </div>
+                        {activeTask.task}
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {todo === 'completed' && (
+                <>
+                  <div className='light-completed-todo'>
+                    {completedTask.map((completedTask) => (
+                      <div className='light-todo-complited'>
+                        <div className='light-todo-status'>
+                          <div className='light-todo-status-circle-complited'></div>
+                        </div>
+                        {completedTask.task}
+                        <div className='light-todo-delete'>
+                          <img 
+                            src={close}
+                            onClick={() => deleteCompletedTask(completedTask.id)}
+                          ></img>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              <div className='light-bottom-menu'>
+                <div className='light-current-todo'>{readTodo.length > 0 ? <p><span className='light-theme-number'>{readTodo.length}</span> items left</p> : <p>none items left</p>}</div>
+                <div className='light-todo-state'>
+                  <div 
+                    className={todo === 'all' ? 'light-all-active' : 'light-all'} 
+                    onClick={all}
+                  >All</div>
+                  <div 
+                    className={todo === 'active' ? 'active-active' : 'light-active'} 
+                    onClick={active}
+                  >Active</div>
+                  <div 
+                    className={todo === 'completed' ? 'completed-active' : 'light-completed'} 
+                    onClick={complited}
+                  >Completed</div>
+                </div>
+                <div 
+                  className='light-todo-clear' onClick={clearCompletedTasks}
+                >Clear Completed</div>
+              </div>
+          </div>
+        </div>
         </>
       )}
     </>
